@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://kk00wfhl7t8n"]
+[gd_scene load_steps=14 format=3 uid="uid://kk00wfhl7t8n"]
 
 [ext_resource type="Texture2D" uid="uid://bt8g8xqf2uqth" path="res://sprites/Pixel Fantasy Slot Machine/Slot Machine/slot-machine4.png" id="1_o5qli"]
 [ext_resource type="Script" uid="uid://bb8vx1uap7hf6" path="res://scripts/machine.gd" id="2_jyhfs"]
@@ -28,12 +28,26 @@ animations = [{
 "speed": 5.0
 }]
 
+[sub_resource type="LabelSettings" id="LabelSettings_choun"]
+font_size = 32
+font_color = Color(0, 1, 0, 1)
+outline_size = 1
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_ya4ey"]
+font_size = 28
+font_color = Color(0, 0.94902, 0, 0.94902)
+outline_size = 1
+outline_color = Color(0, 0, 0, 1)
+
 [node name="Main" type="Node2D"]
 
 [node name="Camera2D" type="Camera2D" parent="."]
-zoom = Vector2(1.05, 1.05)
+position = Vector2(577, 324)
 
 [node name="Machine" type="Sprite2D" parent="."]
+position = Vector2(577, 324)
+scale = Vector2(1.03846, 1.03846)
 texture = ExtResource("1_o5qli")
 script = ExtResource("2_jyhfs")
 
@@ -60,3 +74,208 @@ texture = ExtResource("7_choun")
 [node name="SlotTile3" type="Sprite2D" parent="Machine/Slots"]
 position = Vector2(133, 41)
 texture = ExtResource("7_choun")
+
+[node name="UI" type="Node" parent="."]
+
+[node name="GameLbl" type="Label" parent="UI"]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -204.0
+offset_top = -47.0
+offset_right = 221.0
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_vertical = 8
+text = "YOU WIN"
+label_settings = SubResource("LabelSettings_choun")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UI"]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -216.0
+offset_top = -148.0
+offset_right = 232.0
+offset_bottom = -82.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/separation = 100
+alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/HBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="UI/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "Money"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label2" type="Label" parent="UI/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 1
+text = "$9999999"
+label_settings = SubResource("LabelSettings_ya4ey")
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="UI/HBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="UI/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+text = "Bet"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UI/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+
+[node name="Button" type="Button" parent="UI/HBoxContainer/VBoxContainer2/HBoxContainer"]
+custom_minimum_size = Vector2(20, 0)
+layout_mode = 2
+tooltip_text = "Decrement"
+text = "-"
+
+[node name="LineEdit" type="LineEdit" parent="UI/HBoxContainer/VBoxContainer2/HBoxContainer"]
+layout_mode = 2
+text = "0"
+alignment = 1
+context_menu_enabled = false
+emoji_menu_enabled = false
+virtual_keyboard_type = 2
+shortcut_keys_enabled = false
+middle_mouse_paste_enabled = false
+drag_and_drop_selection_enabled = false
+flat = true
+
+[node name="Button2" type="Button" parent="UI/HBoxContainer/VBoxContainer2/HBoxContainer"]
+custom_minimum_size = Vector2(20, 0)
+layout_mode = 2
+tooltip_text = "Increment"
+text = "+"
+
+[node name="Panel" type="Panel" parent="UI"]
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -107.5
+offset_right = 202.0
+offset_bottom = 107.5
+grow_vertical = 2
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="UI/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 30
+alignment = 1
+
+[node name="Label" type="Label" parent="UI/Panel/VBoxContainer2"]
+layout_mode = 2
+text = "To start press SPACE"
+horizontal_alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/Panel/VBoxContainer2"]
+layout_mode = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UI/Panel/VBoxContainer2/VBoxContainer"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="UI/Panel/VBoxContainer2/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("7_choun")
+expand_mode = 3
+
+[node name="TextureRect2" type="TextureRect" parent="UI/Panel/VBoxContainer2/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("7_choun")
+expand_mode = 3
+
+[node name="TextureRect3" type="TextureRect" parent="UI/Panel/VBoxContainer2/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("7_choun")
+expand_mode = 3
+
+[node name="Label" type="Label" parent="UI/Panel/VBoxContainer2/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "JACKPOT"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="UI/Panel/VBoxContainer2/VBoxContainer"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="UI/Panel/VBoxContainer2/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+texture = ExtResource("8_ya4ey")
+expand_mode = 3
+
+[node name="TextureRect2" type="TextureRect" parent="UI/Panel/VBoxContainer2/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+texture = ExtResource("8_ya4ey")
+expand_mode = 3
+
+[node name="TextureRect3" type="TextureRect" parent="UI/Panel/VBoxContainer2/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+texture = ExtResource("8_ya4ey")
+expand_mode = 3
+
+[node name="Label" type="Label" parent="UI/Panel/VBoxContainer2/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+text = "+ 300"
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="UI/Panel/VBoxContainer2/VBoxContainer"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="UI/Panel/VBoxContainer2/VBoxContainer/HBoxContainer3"]
+layout_mode = 2
+texture = ExtResource("9_eb6dy")
+expand_mode = 3
+
+[node name="TextureRect2" type="TextureRect" parent="UI/Panel/VBoxContainer2/VBoxContainer/HBoxContainer3"]
+layout_mode = 2
+texture = ExtResource("9_eb6dy")
+expand_mode = 3
+
+[node name="TextureRect3" type="TextureRect" parent="UI/Panel/VBoxContainer2/VBoxContainer/HBoxContainer3"]
+layout_mode = 2
+texture = ExtResource("9_eb6dy")
+expand_mode = 3
+
+[node name="Label" type="Label" parent="UI/Panel/VBoxContainer2/VBoxContainer/HBoxContainer3"]
+layout_mode = 2
+text = "+ 200"
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="UI/Panel/VBoxContainer2/VBoxContainer"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="UI/Panel/VBoxContainer2/VBoxContainer/HBoxContainer4"]
+layout_mode = 2
+texture = ExtResource("10_trceg")
+expand_mode = 3
+
+[node name="TextureRect2" type="TextureRect" parent="UI/Panel/VBoxContainer2/VBoxContainer/HBoxContainer4"]
+layout_mode = 2
+texture = ExtResource("10_trceg")
+expand_mode = 3
+
+[node name="TextureRect3" type="TextureRect" parent="UI/Panel/VBoxContainer2/VBoxContainer/HBoxContainer4"]
+layout_mode = 2
+texture = ExtResource("10_trceg")
+expand_mode = 3
+
+[node name="Label" type="Label" parent="UI/Panel/VBoxContainer2/VBoxContainer/HBoxContainer4"]
+layout_mode = 2
+text = "+ 100"
