@@ -1,0 +1,62 @@
+[gd_scene load_steps=12 format=3 uid="uid://kk00wfhl7t8n"]
+
+[ext_resource type="Texture2D" uid="uid://bt8g8xqf2uqth" path="res://sprites/Pixel Fantasy Slot Machine/Slot Machine/slot-machine4.png" id="1_o5qli"]
+[ext_resource type="Script" uid="uid://bb8vx1uap7hf6" path="res://scripts/machine.gd" id="2_jyhfs"]
+[ext_resource type="Texture2D" uid="uid://b5lte4cujxewd" path="res://sprites/Pixel Fantasy Slot Machine/Slot Machine/slot-machine2.png" id="2_sugp2"]
+[ext_resource type="Texture2D" uid="uid://dsqpj3xrasrqt" path="res://sprites/Pixel Fantasy Slot Machine/Slot Machine/slot-machine3.png" id="3_jyhfs"]
+[ext_resource type="Texture2D" uid="uid://b16h0v2sjmrmj" path="res://sprites/Pixel Fantasy Slot Machine/Slot Machine/slot-machine5.png" id="5_tefeu"]
+[ext_resource type="Script" uid="uid://dlskbc673ukn1" path="res://scripts/slots.gd" id="6_o6xl0"]
+[ext_resource type="Texture2D" uid="uid://jsfsg4y02dpa" path="res://sprites/Pixel Fantasy Slot Machine/Slot Machine/slot-symbol1.png" id="7_choun"]
+[ext_resource type="Texture2D" uid="uid://jukp235ce0ap" path="res://sprites/Pixel Fantasy Slot Machine/Slot Machine/slot-symbol2.png" id="8_ya4ey"]
+[ext_resource type="Texture2D" uid="uid://f26q57d3qwh7" path="res://sprites/Pixel Fantasy Slot Machine/Slot Machine/slot-symbol3.png" id="9_eb6dy"]
+[ext_resource type="Texture2D" uid="uid://clyj866h8rww5" path="res://sprites/Pixel Fantasy Slot Machine/Slot Machine/slot-symbol4.png" id="10_trceg"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_tbgi4"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_sugp2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_jyhfs")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_sugp2")
+}],
+"loop": false,
+"name": &"pull",
+"speed": 5.0
+}]
+
+[node name="Main" type="Node2D"]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(1.05, 1.05)
+
+[node name="Machine" type="Sprite2D" parent="."]
+texture = ExtResource("1_o5qli")
+script = ExtResource("2_jyhfs")
+
+[node name="Lever" type="AnimatedSprite2D" parent="Machine"]
+sprite_frames = SubResource("SpriteFrames_tbgi4")
+animation = &"pull"
+speed_scale = 0.6
+
+[node name="Slots" type="Sprite2D" parent="Machine" node_paths=PackedStringArray("slot_tiles")]
+texture = ExtResource("5_tefeu")
+script = ExtResource("6_o6xl0")
+slot_tiles = [NodePath("SlotTile1"), NodePath("SlotTile2"), NodePath("SlotTile3")]
+tile_sprites = Array[CompressedTexture2D]([ExtResource("7_choun"), ExtResource("8_ya4ey"), ExtResource("9_eb6dy"), ExtResource("10_trceg")])
+delay = 0.4
+
+[node name="SlotTile1" type="Sprite2D" parent="Machine/Slots"]
+position = Vector2(-125, 41)
+texture = ExtResource("7_choun")
+
+[node name="SlotTile2" type="Sprite2D" parent="Machine/Slots"]
+position = Vector2(5, 41)
+texture = ExtResource("7_choun")
+
+[node name="SlotTile3" type="Sprite2D" parent="Machine/Slots"]
+position = Vector2(133, 41)
+texture = ExtResource("7_choun")
