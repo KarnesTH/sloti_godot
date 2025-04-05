@@ -1,3 +1,4 @@
+class_name Slots
 extends Sprite2D
 
 @export_category("Sprites & Tiles")
@@ -8,6 +9,9 @@ extends Sprite2D
 @export var spins_per_tile: int = 10
 @export var delay: float = 0.2
 @export var spin_speed: float = 0.05
+
+@export_category("GameManager")
+@export var gm: GameManager
 
 
 func _ready() -> void:
@@ -34,3 +38,14 @@ func _do_spin_animation(tile: Sprite2D) -> void:
 	
 	var final_idx: int = randi_range(0, tile_sprites.size() - 1)
 	tile.texture = tile_sprites[final_idx]
+	
+
+func _check_is_match() -> bool:
+	var tile_1: Texture2D = slot_tiles[0].texture
+	var tile_2: Texture2D = slot_tiles[1].texture
+	var tile_3: Texture2D = slot_tiles[2].texture
+	
+	if tile_1 == tile_2 and tile_2 == tile_3:
+		return true
+	
+	return false

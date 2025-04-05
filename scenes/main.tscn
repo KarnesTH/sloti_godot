@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://kk00wfhl7t8n"]
+[gd_scene load_steps=15 format=3 uid="uid://kk00wfhl7t8n"]
 
 [ext_resource type="Texture2D" uid="uid://bt8g8xqf2uqth" path="res://sprites/Pixel Fantasy Slot Machine/Slot Machine/slot-machine4.png" id="1_o5qli"]
 [ext_resource type="Script" uid="uid://bb8vx1uap7hf6" path="res://scripts/machine.gd" id="2_jyhfs"]
@@ -10,6 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://jukp235ce0ap" path="res://sprites/Pixel Fantasy Slot Machine/Slot Machine/slot-symbol2.png" id="8_ya4ey"]
 [ext_resource type="Texture2D" uid="uid://f26q57d3qwh7" path="res://sprites/Pixel Fantasy Slot Machine/Slot Machine/slot-symbol3.png" id="9_eb6dy"]
 [ext_resource type="Texture2D" uid="uid://clyj866h8rww5" path="res://sprites/Pixel Fantasy Slot Machine/Slot Machine/slot-symbol4.png" id="10_trceg"]
+[ext_resource type="Script" uid="uid://cvjwy76sh7pxw" path="res://scripts/game_manager.gd" id="11_ya4ey"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_tbgi4"]
 animations = [{
@@ -45,23 +46,25 @@ outline_color = Color(0, 0, 0, 1)
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(577, 324)
 
-[node name="Machine" type="Sprite2D" parent="."]
+[node name="Machine" type="Sprite2D" parent="." node_paths=PackedStringArray("gm")]
 position = Vector2(577, 324)
 scale = Vector2(1.03846, 1.03846)
 texture = ExtResource("1_o5qli")
 script = ExtResource("2_jyhfs")
+gm = NodePath("../GameManager")
 
 [node name="Lever" type="AnimatedSprite2D" parent="Machine"]
 sprite_frames = SubResource("SpriteFrames_tbgi4")
 animation = &"pull"
 speed_scale = 0.6
 
-[node name="Slots" type="Sprite2D" parent="Machine" node_paths=PackedStringArray("slot_tiles")]
+[node name="Slots" type="Sprite2D" parent="Machine" node_paths=PackedStringArray("slot_tiles", "gm")]
 texture = ExtResource("5_tefeu")
 script = ExtResource("6_o6xl0")
 slot_tiles = [NodePath("SlotTile1"), NodePath("SlotTile2"), NodePath("SlotTile3")]
 tile_sprites = Array[CompressedTexture2D]([ExtResource("7_choun"), ExtResource("8_ya4ey"), ExtResource("9_eb6dy"), ExtResource("10_trceg")])
 delay = 0.4
+gm = NodePath("../../GameManager")
 
 [node name="SlotTile1" type="Sprite2D" parent="Machine/Slots"]
 position = Vector2(-125, 41)
@@ -109,17 +112,17 @@ grow_vertical = 0
 theme_override_constants/separation = 100
 alignment = 1
 
-[node name="VBoxContainer" type="VBoxContainer" parent="UI/HBoxContainer"]
+[node name="MoneyContainer" type="VBoxContainer" parent="UI/HBoxContainer"]
 layout_mode = 2
 alignment = 1
 
-[node name="Label" type="Label" parent="UI/HBoxContainer/VBoxContainer"]
+[node name="MoneyLbl" type="Label" parent="UI/HBoxContainer/MoneyContainer"]
 layout_mode = 2
 text = "Money"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Label2" type="Label" parent="UI/HBoxContainer/VBoxContainer"]
+[node name="Money" type="Label" parent="UI/HBoxContainer/MoneyContainer"]
 layout_mode = 2
 size_flags_vertical = 1
 text = "$9999999"
@@ -128,26 +131,25 @@ horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="UI/HBoxContainer"]
+[node name="BetContainer" type="VBoxContainer" parent="UI/HBoxContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="UI/HBoxContainer/VBoxContainer2"]
+[node name="BetLbl" type="Label" parent="UI/HBoxContainer/BetContainer"]
 layout_mode = 2
 text = "Bet"
 horizontal_alignment = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="UI/HBoxContainer/VBoxContainer2"]
+[node name="HBoxContainer" type="HBoxContainer" parent="UI/HBoxContainer/BetContainer"]
 layout_mode = 2
 
-[node name="Button" type="Button" parent="UI/HBoxContainer/VBoxContainer2/HBoxContainer"]
+[node name="DecBtn" type="Button" parent="UI/HBoxContainer/BetContainer/HBoxContainer"]
 custom_minimum_size = Vector2(20, 0)
 layout_mode = 2
 tooltip_text = "Decrement"
 text = "-"
 
-[node name="LineEdit" type="LineEdit" parent="UI/HBoxContainer/VBoxContainer2/HBoxContainer"]
+[node name="BetInp" type="LineEdit" parent="UI/HBoxContainer/BetContainer/HBoxContainer"]
 layout_mode = 2
-text = "0"
 alignment = 1
 context_menu_enabled = false
 emoji_menu_enabled = false
@@ -157,7 +159,7 @@ middle_mouse_paste_enabled = false
 drag_and_drop_selection_enabled = false
 flat = true
 
-[node name="Button2" type="Button" parent="UI/HBoxContainer/VBoxContainer2/HBoxContainer"]
+[node name="IncBtn" type="Button" parent="UI/HBoxContainer/BetContainer/HBoxContainer"]
 custom_minimum_size = Vector2(20, 0)
 layout_mode = 2
 tooltip_text = "Increment"
@@ -210,7 +212,7 @@ layout_mode = 2
 texture = ExtResource("7_choun")
 expand_mode = 3
 
-[node name="Label" type="Label" parent="UI/Panel/VBoxContainer2/VBoxContainer/HBoxContainer"]
+[node name="JackpotLbl" type="Label" parent="UI/Panel/VBoxContainer2/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 text = "JACKPOT"
 
@@ -232,7 +234,7 @@ layout_mode = 2
 texture = ExtResource("8_ya4ey")
 expand_mode = 3
 
-[node name="Label" type="Label" parent="UI/Panel/VBoxContainer2/VBoxContainer/HBoxContainer2"]
+[node name="CherryLbl" type="Label" parent="UI/Panel/VBoxContainer2/VBoxContainer/HBoxContainer2"]
 layout_mode = 2
 text = "+ 300"
 
@@ -254,7 +256,7 @@ layout_mode = 2
 texture = ExtResource("9_eb6dy")
 expand_mode = 3
 
-[node name="Label" type="Label" parent="UI/Panel/VBoxContainer2/VBoxContainer/HBoxContainer3"]
+[node name="BellLbl" type="Label" parent="UI/Panel/VBoxContainer2/VBoxContainer/HBoxContainer3"]
 layout_mode = 2
 text = "+ 200"
 
@@ -276,6 +278,21 @@ layout_mode = 2
 texture = ExtResource("10_trceg")
 expand_mode = 3
 
-[node name="Label" type="Label" parent="UI/Panel/VBoxContainer2/VBoxContainer/HBoxContainer4"]
+[node name="BarLbl" type="Label" parent="UI/Panel/VBoxContainer2/VBoxContainer/HBoxContainer4"]
 layout_mode = 2
 text = "+ 100"
+
+[node name="GameManager" type="Node" parent="." node_paths=PackedStringArray("game_lbl", "money", "bet_value", "inc_btn", "dec_btn", "cherry_lbl", "bell_lbl", "bar_lbl")]
+script = ExtResource("11_ya4ey")
+game_lbl = NodePath("../UI/GameLbl")
+money = NodePath("../UI/HBoxContainer/MoneyContainer/Money")
+bet_value = NodePath("../UI/HBoxContainer/BetContainer/HBoxContainer/BetInp")
+inc_btn = NodePath("../UI/HBoxContainer/BetContainer/HBoxContainer/IncBtn")
+dec_btn = NodePath("../UI/HBoxContainer/BetContainer/HBoxContainer/DecBtn")
+cherry_lbl = NodePath("../UI/Panel/VBoxContainer2/VBoxContainer/HBoxContainer2/CherryLbl")
+bell_lbl = NodePath("../UI/Panel/VBoxContainer2/VBoxContainer/HBoxContainer3/BellLbl")
+bar_lbl = NodePath("../UI/Panel/VBoxContainer2/VBoxContainer/HBoxContainer4/BarLbl")
+start_money = 1000
+
+[connection signal="pressed" from="UI/HBoxContainer/BetContainer/HBoxContainer/DecBtn" to="GameManager" method="_on_dec_btn_pressed"]
+[connection signal="pressed" from="UI/HBoxContainer/BetContainer/HBoxContainer/IncBtn" to="GameManager" method="_on_inc_btn_pressed"]
