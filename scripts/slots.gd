@@ -1,6 +1,7 @@
 class_name Slots
 extends Sprite2D
 
+# public variables
 @export_category("Sprites & Tiles")
 @export var slot_tiles: Array[Sprite2D] = []
 @export var tile_sprites: Array[CompressedTexture2D] = []
@@ -13,23 +14,34 @@ extends Sprite2D
 @export_category("GameManager")
 @export var gm: GameManager
 
+# private variables
+var finished_spins: int = 0
 
+## Is called when the application is started.
 func _ready() -> void:
 	for slot_tile in slot_tiles:
 		var rnd_idx: int = randi_range(0, tile_sprites.size() - 1)
 		
 		slot_tile.texture = tile_sprites[rnd_idx]
 
+## Spins all slot tiles with a delay.
 func _spin() -> void:
+	finished_spins = 0
 	for idx in slot_tiles.size():
 		_spin_tile(idx)
 		await get_tree().create_timer(delay).timeout
 
+## Spins a tile by a given index.
+##
+## @params idx: int - The index for a tile in the slot_tiles array
 func _spin_tile(idx: int) -> void:
 	var tile = slot_tiles[idx]
 	
 	call_deferred("_do_spin_animation", tile)
 
+## Animate the spin for a given tile.
+##
+## @param tile: Sprite2D - The tile to animate
 func _do_spin_animation(tile: Sprite2D) -> void:
 	for idx in spins_per_tile:
 		var rnd_idx: int = randi_range(0, tile_sprites.size() - 1)
@@ -39,13 +51,35 @@ func _do_spin_animation(tile: Sprite2D) -> void:
 	var final_idx: int = randi_range(0, tile_sprites.size() - 1)
 	tile.texture = tile_sprites[final_idx]
 	
+	finished_spins += 1
+	if finished_spins == slot_tiles.size():
+		var result = _check_is_match()
+		gm._handle_match(result)
 
-func _check_is_match() -> bool:
-	var tile_1: Texture2D = slot_tiles[0].texture
-	var tile_2: Texture2D = slot_tiles[1].texture
-	var tile_3: Texture2D = slot_tiles[2].texture
+## Returns the index of a tile.
+##
+## @param texture: CompressedTexture2D - The texture to find the index
+func _get_tile_index(texture: CompressedTexture2D) -> int:
+	return tile_sprites.find(texture)
+
+## Returns the name of the file name.
+##
+## @param tile: Sprite2D - The sprite to get the file name
+func _get_tile_name(tile: Sprite2D) -> String:
+	var path: String = tile.texture.resource_path
+	var file_name: String = path.get_file().get_slice(".png", 0)
+	return file_name
+
+## Check the slots for matches.
+func _check_is_match() -> String:
+	var idxs: Array[int] = []
+	for tile in slot_tiles:
+		idxs.append(_get_tile_index(tile.texture))
+		gm.final_symbols = _get_tile_name(tile)
 	
-	if tile_1 == tile_2 and tile_2 == tile_3:
-		return true
-	
-	return false
+	if idxs[0] == idxs[1] and idxs[1] == idxs[2]:
+		return "jackpot"
+	elif idxs[0] == idxs[1] or idxs[0] == idxs[2] or idxs[1] == idxs[2]:
+		return "partial_match"
+	else:
+		return "no_match"
